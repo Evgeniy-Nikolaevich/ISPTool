@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "FMC_USER.h"
+#include "fmc_user.h"
 
 /**
  * @brief      Program 32-bit data into specified address of flash

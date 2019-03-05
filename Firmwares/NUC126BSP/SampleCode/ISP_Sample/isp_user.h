@@ -3,9 +3,7 @@
 
 #define FW_VERSION					0x31
 
-#include "FMC_USER.h"
-
-//#define SUPPORT_WRITECKSUM
+#include "fmc_user.h"
 
 #define CMD_UPDATE_APROM			0x000000A0
 #define CMD_UPDATE_CONFIG			0x000000A1

@@ -9,7 +9,7 @@
  ******************************************************************************/
 #include <stdio.h>
 #include "string.h"
-#include "ISP_USER.h"
+#include "isp_user.h"
 
 __align(4) uint8_t response_buff[64];
 __align(4) static uint8_t aprom_buf[FMC_FLASH_PAGE_SIZE];
@@ -171,19 +171,21 @@ int ParseCmd(unsigned char *buffer, uint8_t len)
         GetDataFlashInfo(&g_dataFlashAddr, &g_dataFlashSize);
         goto out;
     } else if (lcmd == CMD_RESEND_PACKET) { //for APROM&Data flash only
+        uint32_t PageAddress;
         StartAddress -= LastDataLen;
         TotalLen += LastDataLen;
+        PageAddress = StartAddress & (0x100000 - FMC_FLASH_PAGE_SIZE);
 
-        if ((StartAddress & 0xFFE00) >= Config0) {
+        if (PageAddress >= Config0) {
             goto out;
         }
 
-        ReadData(StartAddress & 0xFFE00, StartAddress, (uint32_t *)aprom_buf);
-        FMC_Erase_User(StartAddress & 0xFFE00);
-        WriteData(StartAddress & 0xFFE00, StartAddress, (uint32_t *)aprom_buf);
+        ReadData(PageAddress, StartAddress, (uint32_t *)aprom_buf);
+        FMC_Erase_User(PageAddress);
+        WriteData(PageAddress, StartAddress, (uint32_t *)aprom_buf);
 
         if ((StartAddress % FMC_FLASH_PAGE_SIZE) >= (FMC_FLASH_PAGE_SIZE - LastDataLen)) {
-            FMC_Erase_User((StartAddress & 0xFFE00) + FMC_FLASH_PAGE_SIZE);
+            FMC_Erase_User(PageAddress + FMC_FLASH_PAGE_SIZE);
         }
 
         goto out;

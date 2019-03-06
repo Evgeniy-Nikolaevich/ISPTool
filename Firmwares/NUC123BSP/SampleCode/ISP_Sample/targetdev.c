@@ -38,8 +38,10 @@ void GetDataFlashInfo(uint32_t *addr, uint32_t *size)
     } else {
         g_apromSize += 4096;
         FMC_Read_User(Config1, &uData);
-
-        if (uData > g_apromSize || (uData & 0x1FF)) { //avoid config1 value from error
+        // filter the reserved bits in CONFIG1
+        uData &= 0x000FFFFF;
+			
+        if (uData > g_apromSize || (uData & (FMC_FLASH_PAGE_SIZE - 1))) { //avoid config1 value from error
             uData = g_apromSize;
         }
 

@@ -1,13 +1,21 @@
 #include <stdio.h>
-#include "string.h"
 #include "isp_user.h"
+#include "fmc_user.h"
+
+#if 1
+#define RSTSTS		RSTSRC
+#define ISPCTL		ISPCON
+#endif
+
+
+volatile uint8_t bISPDataReady;
 
 __align(4) uint8_t response_buff[64];
 __align(4) static uint8_t aprom_buf[FMC_FLASH_PAGE_SIZE];
 uint32_t bUpdateApromCmd;
 uint32_t g_apromSize, g_dataFlashAddr, g_dataFlashSize;
 
-static uint16_t Checksum(unsigned char *buf, int len)
+__STATIC_INLINE uint16_t Checksum(unsigned char *buf, int len)
 {
     int i;
     uint16_t c;
@@ -52,20 +60,20 @@ int ParseCmd(unsigned char *buffer, uint8_t len)
         outpw(response + 8, SYS->PDID);
         goto out;
     } else if (lcmd == CMD_RUN_APROM || lcmd == CMD_RUN_LDROM || lcmd == CMD_RESET) {
-        outpw(&SYS->RSTSRC, 3);//clear bit
+        SYS->RSTSTS = 3; //clear bit
 
         /* Set BS */
         if (lcmd == CMD_RUN_APROM) {
-            i = (FMC->ISPCON & 0xFFFFFFFC);
+            i = (FMC->ISPCTL & 0xFFFFFFFC);
         } else if (lcmd == CMD_RUN_LDROM) {
-            i = (FMC->ISPCON & 0xFFFFFFFC);
+            i = (FMC->ISPCTL & 0xFFFFFFFC);
             i |= 0x00000002;
         } else {
-            i = (FMC->ISPCON & 0xFFFFFFFE);//ISP disable
+            i = (FMC->ISPCTL & 0xFFFFFFFE);//ISP disable
         }
-
-        outpw(&FMC->ISPCON, i);
-        outpw(&SCB->AIRCR, (V6M_AIRCR_VECTKEY_DATA | V6M_AIRCR_SYSRESETREQ));
+        
+        FMC->ISPCTL = i;
+        SCB->AIRCR = (V6M_AIRCR_VECTKEY_DATA | V6M_AIRCR_SYSRESETREQ);
 
         /* Trap the CPU */
         while (1);
@@ -73,10 +81,10 @@ int ParseCmd(unsigned char *buffer, uint8_t len)
         g_packno = 1;
         goto out;
     } else if ((lcmd == CMD_UPDATE_APROM) || (lcmd == CMD_ERASE_ALL)) {
-        EraseAP(FMC_APROM_BASE, g_apromSize); // erase APROM // g_dataFlashAddr, g_apromSize
+        EraseAP(FMC_APROM_BASE, (g_apromSize < g_dataFlashAddr) ? g_apromSize : g_dataFlashAddr); // erase APROM // g_dataFlashAddr, g_apromSize
 
-        if (lcmd == CMD_ERASE_ALL) { //erase data flash
-            EraseAP(g_dataFlashAddr, g_dataFlashAddr + g_dataFlashSize);
+        if (lcmd == CMD_ERASE_ALL) {
+            EraseAP(g_dataFlashAddr, g_dataFlashSize);
             *(uint32_t *)(response + 8) = regcnf0 | 0x02;
             UpdateConfig((uint32_t *)(response + 8), NULL);
         }
@@ -89,7 +97,7 @@ int ParseCmd(unsigned char *buffer, uint8_t len)
             StartAddress = g_dataFlashAddr;
 
             if (g_dataFlashSize) { //g_dataFlashAddr
-                EraseAP(g_dataFlashAddr, g_dataFlashAddr + g_dataFlashSize);
+                EraseAP(g_dataFlashAddr, g_dataFlashSize);
             } else {
                 goto out;
             }
@@ -109,7 +117,7 @@ int ParseCmd(unsigned char *buffer, uint8_t len)
         UpdateConfig((uint32_t *)(pSrc), (uint32_t *)(response + 8));
         GetDataFlashInfo(&g_dataFlashAddr, &g_dataFlashSize);
         goto out;
-    } else if (lcmd == CMD_RESEND_PACKET) {
+    } else if (lcmd == CMD_RESEND_PACKET) { //for APROM&Data flash only
         uint32_t PageAddress;
         StartAddress -= LastDataLen;
         TotalLen += LastDataLen;

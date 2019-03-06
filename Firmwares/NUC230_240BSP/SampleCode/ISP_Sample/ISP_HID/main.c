@@ -61,31 +61,30 @@ int32_t main(void)
     g_apromSize = GetApromSize();
     GetDataFlashInfo(&g_dataFlashAddr, &g_dataFlashSize);
 
-    while (DetectPin == 0) {
-        /* Open USB controller */
-        USBD_Open(&gsInfo, HID_ClassRequest, NULL);
-        /*Init Endpoint configuration for HID */
-        HID_Init();
-        /* Start USB device */
-        USBD_Start();
-        /* Enable USB device interrupt */
-        NVIC_EnableIRQ(USBD_IRQn);
-
-        while (DetectPin == 0) {
-            if (bUsbDataReady == TRUE) {
-                WDT->WTCR &= ~(WDT_WTCR_WTE_Msk | WDT_WTCR_DBGACK_WDT_Msk);
-                WDT->WTCR |= (WDT_TIMEOUT_2POW18 | WDT_WTCR_WTR_Msk);
-                ParseCmd((uint8_t *)usb_rcvbuf, EP3_MAX_PKT_SIZE);
-                EP2_Handler();
-                //printf("USB process!\n");
-                bUsbDataReady = FALSE;
-            }
-        }
-
+    if (DetectPin != 0) {
         goto _APROM;
     }
 
-    //CLK_SysTickDelay(300000);
+    /* Open USB controller */
+    USBD_Open(&gsInfo, HID_ClassRequest, NULL);
+    /*Init Endpoint configuration for HID */
+    HID_Init();
+    /* Start USB device */
+    USBD_Start();
+    /* Enable USB device interrupt */
+    NVIC_EnableIRQ(USBD_IRQn);
+
+    while (DetectPin == 0) {
+        if (bUsbDataReady == TRUE) {
+            WDT->WTCR &= ~(WDT_WTCR_WTE_Msk | WDT_WTCR_DBGACK_WDT_Msk);
+            WDT->WTCR |= (WDT_TIMEOUT_2POW18 | WDT_WTCR_WTR_Msk);
+            ParseCmd((uint8_t *)usb_rcvbuf, EP3_MAX_PKT_SIZE);
+            EP2_Handler();
+            bUsbDataReady = FALSE;
+        }
+    }
+
+_APROM:
     SysTick->LOAD = 300000 * CyclesPerUs;
     SysTick->VAL  = (0x00);
     SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
@@ -93,7 +92,6 @@ int32_t main(void)
     /* Waiting for down-count to zero */
     while ((SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk) == 0);
 
-_APROM:
     outpw(&SYS->RSTSRC, 3);//clear bit
     outpw(&FMC->ISPCON, inpw(&FMC->ISPCON) & 0xFFFFFFFC);
     outpw(&SCB->AIRCR, (V6M_AIRCR_VECTKEY_DATA | V6M_AIRCR_SYSRESETREQ));

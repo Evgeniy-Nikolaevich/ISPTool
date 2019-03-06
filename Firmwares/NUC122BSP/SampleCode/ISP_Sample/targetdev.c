@@ -1,6 +1,5 @@
 
 #include "targetdev.h"
-#include "ISP_USER.h"
 
 // Supports 32K/64K (APROM)
 uint32_t GetApromSize()

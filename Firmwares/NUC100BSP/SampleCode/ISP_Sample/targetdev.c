@@ -1,6 +1,6 @@
 
 #include "targetdev.h"
-#include "ISP_USER.h"
+#include "isp_user.h"
 
 // Supports 32K/64K (APROM)
 
@@ -31,8 +31,10 @@ void GetDataFlashInfo(uint32_t *addr, uint32_t *size)
 
         if ((uData & 0x01) == 0) { //DFEN enable
             FMC_Read_User(Config1, &uData);
+            // filter the reserved bits in CONFIG1
+            uData &= 0x000FFFFF;
 
-            if (uData > g_apromSize || (uData & 0x1FF)) { //avoid config1 value from error
+            if (uData > g_apromSize || (uData & (FMC_FLASH_PAGE_SIZE - 1))) { //avoid config1 value from error
                 uData = g_apromSize;
             }
 

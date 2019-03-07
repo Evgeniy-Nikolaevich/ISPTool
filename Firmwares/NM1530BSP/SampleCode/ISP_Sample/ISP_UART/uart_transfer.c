@@ -13,12 +13,7 @@
 #include "targetdev.h"
 #include "uart_transfer.h"
 
-#ifdef __ICCARM__
-#pragma data_alignment=4
-uint8_t  uart_rcvbuf[MAX_PKT_SIZE] = {0};
-#else
 __align(4) uint8_t  uart_rcvbuf[MAX_PKT_SIZE] = {0};
-#endif
 
 uint8_t volatile bUartDataReady = 0;
 uint8_t volatile bufhead = 0;
@@ -59,23 +54,6 @@ void PutString(void)
         UART_T->THR = response_buff[i];
     }
 }
-
-/*
-uint32_t UART_IS_CONNECT(void)
-{
-    if((bufhead >= 4) || (bUartDataReady == TRUE)) {
-        uint32_t lcmd;
-        lcmd = inpw(uart_rcvbuf);
-        if(lcmd == 0x000000AE) {	// CMD_CONNECT
-            return 1;
-        } else {
-            bUartDataReady = 0;
-            bufhead = 0;
-        }
-    }
-    return 0;
-}
-*/
 
 void UART_Init()
 {

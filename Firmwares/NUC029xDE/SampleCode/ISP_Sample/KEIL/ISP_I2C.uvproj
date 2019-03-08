@@ -7,7 +7,7 @@
 
   <Targets>
     <Target>
-      <TargetName>ISP_UART</TargetName>
+      <TargetName>ISP_I2C</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
       <pCCUsed>5060528::V5.06 update 5 (build 528)::ARMCC</pCCUsed>
@@ -46,7 +46,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\obj\</OutputDirectory>
-          <OutputName>NUC029xDE_ISP_UART0_PB0_PB1</OutputName>
+          <OutputName>NUC029xDE_ISP_I2C0_PA8_PA9_CTL_PA10</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
@@ -374,7 +374,7 @@
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\..\..\Library\CMSIS\Include;..\..\..\..\Library\Device\Nuvoton\NUC029xDE\Include;..\..\..\..\Library\StdDriver\inc</IncludePath>
+              <IncludePath>..\..\..\Library\CMSIS\Include;..\..\..\Library\Device\Nuvoton\NUC029xDE\Include;..\..\..\Library\StdDriver\inc;..\</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -421,27 +421,30 @@
             <File>
               <FileName>startup_NUC029xDE.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\..\..\..\Library\Device\Nuvoton\NUC029xDE\Source\ARM\startup_NUC029xDE.s</FilePath>
+              <FilePath>..\..\..\Library\Device\Nuvoton\NUC029xDE\Source\ARM\startup_NUC029xDE.s</FilePath>
             </File>
             <File>
               <FileName>system_NUC029xDE.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\Library\Device\Nuvoton\NUC029xDE\Source\system_NUC029xDE.c</FilePath>
+              <FilePath>..\..\..\Library\Device\Nuvoton\NUC029xDE\Source\system_NUC029xDE.c</FilePath>
             </File>
           </Files>
         </Group>
         <Group>
           <GroupName>Library</GroupName>
+        </Group>
+        <Group>
+          <GroupName>User</GroupName>
           <Files>
             <File>
-              <FileName>FMC_USER.c</FileName>
+              <FileName>fmc_user.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\FMC_USER.c</FilePath>
+              <FilePath>..\fmc_user.c</FilePath>
             </File>
             <File>
-              <FileName>ISP_USER.c</FileName>
+              <FileName>isp_user.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\ISP_USER.c</FilePath>
+              <FilePath>..\isp_user.c</FilePath>
             </File>
             <File>
               <FileName>targetdev.c</FileName>
@@ -449,19 +452,14 @@
               <FilePath>..\targetdev.c</FilePath>
             </File>
             <File>
-              <FileName>uart_transfer.c</FileName>
+              <FileName>i2c_transfer.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\uart_transfer.c</FilePath>
+              <FilePath>..\ISP_I2C\i2c_transfer.c</FilePath>
             </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>User</GroupName>
-          <Files>
             <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\main.c</FilePath>
+              <FilePath>..\ISP_I2C\main.c</FilePath>
             </File>
           </Files>
         </Group>

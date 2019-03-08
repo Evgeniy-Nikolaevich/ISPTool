@@ -1,6 +1,5 @@
 
-#include "NUC029xAN.h"
-#include "ISP_USER.h"
+#include "targetdev.h"
 
 //the smallest of APROM size is 16K
 uint32_t GetApromSize()

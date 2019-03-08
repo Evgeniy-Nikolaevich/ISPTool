@@ -23,10 +23,7 @@ extern uint8_t volatile bufhead;
 
 /*-------------------------------------------------------------*/
 void UART_Init(void);
-void UART_T_Init(void);
-void UART_IRQHandler(void);
 void UART0_IRQHandler(void);
-void UART1_IRQHandler(void);
 void PutString(void);
 uint32_t UART_IS_CONNECT(void);
 

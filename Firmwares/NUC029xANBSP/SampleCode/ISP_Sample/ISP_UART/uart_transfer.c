@@ -60,36 +60,24 @@ void PutString(void)
     }
 }
 
-/*
-uint32_t UART_IS_CONNECT(void)
-{
-    if((bufhead >= 4) || (bUartDataReady == TRUE)) {
-        uint32_t lcmd;
-        lcmd = inpw(uart_rcvbuf);
-        if(lcmd == 0x000000AE) {	// CMD_CONNECT
-            return 1;
-        } else {
-            bUartDataReady = 0;
-            bufhead = 0;
-        }
-    }
-    return 0;
-}
-*/
-
-void UART_T_Init()
+void UART_Init()
 {
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init UART                                                                                               */
     /*---------------------------------------------------------------------------------------------------------*/
-//  UART_T->FUN_SEL = UART_FUNC_SEL_UART;
+    /* Select UART function */
+    UART_T->FUN_SEL = UART_FUNC_SEL_UART;
+    /* Set UART line configuration */
     UART_T->LCR = UART_WORD_LEN_8 | UART_PARITY_NONE | UART_STOP_BIT_1;
+    /* Set UART Rx and RTS trigger level */
     UART_T->FCR = UART_FCR_RFITL_14BYTES | UART_FCR_RTS_TRI_LEV_14BYTES;
+    /* Set UART baud rate */
     UART_T->BAUD = (UART_BAUD_MODE0 | UART_BAUD_MODE0_DIVIDER(__HIRC, 115200));
-//  UART_T->TOR = (UART_T->TOR & ~UART_TOR_TOIC_Msk)| (0x40);
-    UART_T->TOR = 0x40;
+    /* Set time-out interrupt comparator */
+    UART_T->TOR = (UART_T->TOR & ~UART_TOR_TOIC_Msk) | (0x40);
     NVIC_SetPriority(UART_T_IRQn, 2);
     NVIC_EnableIRQ(UART_T_IRQn);
+    /* 0x0811 */
     UART_T->IER = (UART_IER_TIME_OUT_EN_Msk | UART_IER_RTO_IEN_Msk | UART_IER_RDA_IEN_Msk);
 }
 

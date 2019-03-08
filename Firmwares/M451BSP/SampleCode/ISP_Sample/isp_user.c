@@ -2,12 +2,20 @@
 #include "isp_user.h"
 #include "fmc_user.h"
 
+#if 0
+#define RSTSTS		RSTSRC
+#define ISPCTL		ISPCON
+#endif
+
+
+volatile uint8_t bISPDataReady;
+
 __align(4) uint8_t response_buff[64];
 __align(4) static uint8_t aprom_buf[FMC_FLASH_PAGE_SIZE];
 uint32_t bUpdateApromCmd;
 uint32_t g_apromSize, g_dataFlashAddr, g_dataFlashSize;
 
-static uint16_t Checksum(unsigned char *buf, int len)
+__STATIC_INLINE uint16_t Checksum(unsigned char *buf, int len)
 {
     int i;
     uint16_t c;
@@ -52,7 +60,7 @@ int ParseCmd(unsigned char *buffer, uint8_t len)
         outpw(response + 8, SYS->PDID);
         goto out;
     } else if (lcmd == CMD_RUN_APROM || lcmd == CMD_RUN_LDROM || lcmd == CMD_RESET) {
-        outpw(&SYS->RSTSTS, 3);//clear bit
+        SYS->RSTSTS = 3; //clear bit
 
         /* Set BS */
         if (lcmd == CMD_RUN_APROM) {
@@ -73,7 +81,7 @@ int ParseCmd(unsigned char *buffer, uint8_t len)
         g_packno = 1;
         goto out;
     } else if ((lcmd == CMD_UPDATE_APROM) || (lcmd == CMD_ERASE_ALL)) {
-        EraseAP(FMC_APROM_BASE, g_dataFlashAddr); // erase APROM
+        EraseAP(FMC_APROM_BASE, (g_apromSize < g_dataFlashAddr) ? g_apromSize : g_dataFlashAddr); // erase APROM // g_dataFlashAddr, g_apromSize
 
         if (lcmd == CMD_ERASE_ALL) {
             EraseAP(g_dataFlashAddr, g_dataFlashSize);

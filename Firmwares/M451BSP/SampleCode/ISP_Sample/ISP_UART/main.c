@@ -140,7 +140,6 @@ int main(void)
             }
         }
 
-        //if((SysTick->CTRL & (1 << 16)) != 0)//timeout, then goto APROM
         if (SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk) {
             goto _APROM;
         }

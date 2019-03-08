@@ -94,7 +94,7 @@ int32_t main(void)
     g_apromSize = GetApromSize();
     GetDataFlashInfo(&g_dataFlashAddr, &g_dataFlashSize);
 
-    if (DetectPin == 0) {
+    if (DetectPin != 0) {
         goto _APROM;
     }
 
@@ -150,7 +150,6 @@ int32_t main(void)
         }
     }
 
-    goto _APROM;
 _APROM:
     SysTick->LOAD = 300000 * CyclesPerUs;
     SysTick->VAL  = (0x00);

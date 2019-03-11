@@ -1,15 +1,4 @@
-/******************************************************************************
- * @file     main.c
- * @brief
- *           Demonstrate how to transfer ISP Command between USB device and PC through USB HID interface.
- *           A windows tool is also included in this sample code to connect with USB device.
- *
- * @note
- * Copyright (C) 2016 Nuvoton Technology Corp. All rights reserved.
- ******************************************************************************/
 #include <stdio.h>
-#include "NUC126.h"
-#include "hid_transfer.h"
 #include "targetdev.h"
 
 #define PLLCTL_SETTING  CLK_PLLCTL_144MHz_HXT
@@ -18,7 +7,7 @@
 /* If crystal-less is enabled, system won't use any crystal as clock source
    If using crystal-less, system will be 48MHz, otherwise, system is 72MHz
 */
-#define CRYSTAL_LESS        1
+//#define CRYSTAL_LESS        1
 #define HIRC48_AUTO_TRIM    0x412   /* Use USB signal to fine tune HIRC 48MHz */
 #define TRIM_INIT           (SYS_BASE+0x118)
 

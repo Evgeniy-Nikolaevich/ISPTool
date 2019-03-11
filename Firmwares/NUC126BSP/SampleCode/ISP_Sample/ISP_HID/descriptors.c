@@ -6,7 +6,7 @@
  * Copyright (C) 2016 Nuvoton Technology Corp. All rights reserved.
  ******************************************************************************/
 /*!<Includes */
-#include "NUC126.h"
+#include "targetdev.h"
 #include "hid_transfer.h"
 
 /*!<USB HID Report Descriptor */

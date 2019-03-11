@@ -7,7 +7,7 @@
 
   <Targets>
     <Target>
-      <TargetName>ISP_UART</TargetName>
+      <TargetName>ISP_I2C</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
       <pCCUsed>5060528::V5.06 update 5 (build 528)::ARMCC</pCCUsed>
@@ -46,7 +46,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\obj\</OutputDirectory>
-          <OutputName>NUC126_ISP_UART0_PD0_PD1</OutputName>
+          <OutputName>NUC126_ISP_I2C0_PD4_PD5_CTL_PD3</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
@@ -449,14 +449,14 @@
               <FilePath>..\targetdev.c</FilePath>
             </File>
             <File>
-              <FileName>main.c</FileName>
+              <FileName>i2c_transfer.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\ISP_UART\main.c</FilePath>
+              <FilePath>..\ISP_I2C\i2c_transfer.c</FilePath>
             </File>
             <File>
-              <FileName>uart_transfer.c</FileName>
+              <FileName>main.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\ISP_UART\uart_transfer.c</FilePath>
+              <FilePath>..\ISP_I2C\main.c</FilePath>
             </File>
           </Files>
         </Group>

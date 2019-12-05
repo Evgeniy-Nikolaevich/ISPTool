@@ -67,7 +67,10 @@ CNuvoISPDlg::CNuvoISPDlg(UINT Template,
 
     WINCTRLID buddy[] = {
         {IDC_BUTTON_APROM, IDC_EDIT_FILEPATH_APROM, IDC_STATIC_FILEINFO_APROM},
-        {IDC_BUTTON_NVM, IDC_EDIT_FILEPATH_NVM, IDC_STATIC_FILEINFO_NVM}
+        {IDC_BUTTON_NVM, IDC_EDIT_FILEPATH_NVM, IDC_STATIC_FILEINFO_NVM},
+#if (SUPPORT_SPIFLASH)
+        {IDC_BUTTON_SPI, IDC_EDIT_FILEPATH_SPI, IDC_STATIC_FILEINFO_SPI},
+#endif
     };
     memcpy(&m_CtrlID, buddy, sizeof(m_CtrlID));
 }
@@ -95,6 +98,9 @@ void CNuvoISPDlg::DoDataExchange(CDataExchange *pDX)
     DDX_Text(pDX, IDC_STATIC_CONNECT, m_sConnect);
     DDX_Check(pDX, IDC_CHECK_APROM, m_bProgram_APROM);
     DDX_Check(pDX, IDC_CHECK_NVM, m_bProgram_NVM);
+#if (SUPPORT_SPIFLASH)
+    DDX_Check(pDX, IDC_CHECK_SPI, m_bProgram_SPI);
+#endif
     DDX_Check(pDX, IDC_CHECK_CONFIG, m_bProgram_Config);
     DDX_Check(pDX, IDC_CHECK_ERASE, m_bErase);
     DDX_Check(pDX, IDC_CHECK_RUN_APROM, m_bRunAPROM);
@@ -113,6 +119,10 @@ BEGIN_MESSAGE_MAP(CNuvoISPDlg, CDialog)
     ON_BN_CLICKED(IDC_BUTTON_CONNECT, OnButtonConnect)
     ON_BN_CLICKED(IDC_BUTTON_APROM, OnButtonLoadFile)
     ON_BN_CLICKED(IDC_BUTTON_NVM, OnButtonLoadFile)
+#if (SUPPORT_SPIFLASH)
+    ON_BN_CLICKED(IDC_BUTTON_SPI, OnButtonLoadFile)
+    ON_BN_CLICKED(IDC_CHECK_SPI, OnButtonCheckSPI)
+#endif
     ON_BN_CLICKED(IDC_BUTTON_START, OnButtonStart)
     ON_NOTIFY(TCN_SELCHANGE, IDC_TAB_DATA, OnSelchangeTabData)
     ON_BN_CLICKED(IDC_BUTTON_CONFIG, OnButtonConfig)
@@ -934,3 +944,16 @@ void CNuvoISPDlg::OnKillfocusEditAPRomOffset()
     SetDlgItemText(IDC_EDIT_APROM_BASE_ADDRESS, strAddr);
     TRACE(_T("OnKillfocusEditAPRomOffset\n"));
 }
+
+#if (SUPPORT_SPIFLASH)
+void CNuvoISPDlg::OnButtonCheckSPI()
+{
+    UpdateData(TRUE);
+
+    if (m_bProgram_SPI == 2) {
+        SetDlgItemText(IDC_CHECK_SPI, _T("Erase SPI"));
+    } else {
+        SetDlgItemText(IDC_CHECK_SPI, _T("SPI Flash"));
+    }
+}
+#endif

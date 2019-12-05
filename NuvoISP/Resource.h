@@ -23,6 +23,7 @@
 #define IDC_LINK_GITHUB                 126
 #define IDC_LINK_GITEE                  127
 #define IDC_LINK_GITLAB                 128
+#define IDD_DIALOG_NUVOISP_WITH_SPI     129
 #define IDD_DIALOG_CONFIGURATION_NANO100 130
 #define IDD_DIALOG_CONFIGURATION_MINI51 132
 #define IDI_ICON_NULINK                 134
@@ -351,7 +352,7 @@
 #define ID_OPTION_PROGRAMCONFIGURATION  32817
 
 // Next default values for new objects
-// 
+//
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        567

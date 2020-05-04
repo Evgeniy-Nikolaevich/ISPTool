@@ -477,8 +477,15 @@ void CNuvoISPDlg::OnButtonStart()
 {
     // TODO: Add your control notification handler code here
     UpdateData(TRUE);
-
     /* Try to reload file if necessary */
+#if (SUPPORT_SPIFLASH)
+
+    if (!(m_bProgram_APROM || m_bProgram_NVM || m_bProgram_Config || m_bErase || m_bRunAPROM || m_bProgram_SPI)) {
+        MessageBox(_T("You did not select any operation."), NULL, MB_ICONSTOP);
+        return;
+    }
+
+#else
 
     /* Check program operation */
     if (!(m_bProgram_APROM || m_bProgram_NVM || m_bProgram_Config || m_bErase || m_bRunAPROM)) {
@@ -486,6 +493,7 @@ void CNuvoISPDlg::OnButtonStart()
         return;
     }
 
+#endif
     /* WYLIWYP : What You Lock Is What You Program*/
     /* Lock ALL */
     EnableProgramOption(FALSE);
@@ -620,6 +628,10 @@ void CNuvoISPDlg::EnableProgramOption(BOOL bEnable)
     EnableDlgItem(IDC_CHECK_ERASE, bEnable);
     EnableDlgItem(IDC_CHECK_RUN_APROM, bEnable);
     EnableDlgItem(IDC_BUTTON_START, bEnable);
+#if (SUPPORT_SPIFLASH)
+    EnableDlgItem(IDC_BUTTON_SPI, bEnable);
+    EnableDlgItem(IDC_CHECK_SPI, bEnable);
+#endif
 }
 
 void CNuvoISPDlg::OnPaint()

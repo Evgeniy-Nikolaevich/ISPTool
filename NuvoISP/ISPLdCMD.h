@@ -2,7 +2,7 @@
 #define INC__ISP_LD_H__
 #pragma once
 
-#define SUPPORT_SPIFLASH (0)
+#define SUPPORT_SPIFLASH (1)
 
 #include "CScopedMutex.hpp"
 #include "Interface\CHidIO2.h"

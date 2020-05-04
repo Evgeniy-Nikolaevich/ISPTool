@@ -517,6 +517,15 @@ void CNuvoISPDlg::OnButtonStart()
             }
         }
 
+#if (SUPPORT_SPIFLASH)
+
+        if (strErr.IsEmpty() && (m_bProgram_SPI == 1)) {
+            if (m_sFileInfo[2].st_size == 0) {
+                strErr = _T("Can not load SPI flash file for programming!");
+            }
+        }
+
+#endif
         // In case user press "Enter" after typing offset, need to call OnKillfocusEditAPRomOffset manually
         OnKillfocusEditAPRomOffset();
         UpdateAddrOffset();

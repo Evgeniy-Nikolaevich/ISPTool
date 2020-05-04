@@ -61,9 +61,6 @@ protected:
     afx_msg void OnButtonConfig();
     afx_msg void OnPaint();
     afx_msg void OnKillfocusEditAPRomOffset();
-#if (SUPPORT_SPIFLASH)
-    afx_msg void OnButtonCheckSPI();
-#endif
     //}}AFX_MSG
     virtual void DoDataExchange(CDataExchange *pDX);	// DDX/DDV support
     virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);

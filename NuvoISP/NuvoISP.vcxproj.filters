@@ -57,9 +57,6 @@
     <ClInclude Include="DataBase\PartNumID.h">
       <Filter>External\DataBase</Filter>
     </ClInclude>
-    <ClInclude Include="DialogConfiguration\DialogConfiguration_M2351.h">
-      <Filter>External\DialogConfiguration</Filter>
-    </ClInclude>
     <ClInclude Include="DataBase\NuDataBase.h">
       <Filter>External\DataBase</Filter>
     </ClInclude>
@@ -89,51 +86,6 @@
     <ClCompile Include="DialogConfiguration\AppConfig.cpp">
       <Filter>External\DialogConfiguration</Filter>
     </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_M05x.cpp">
-      <Filter>External\DialogConfiguration</Filter>
-    </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_M451.cpp">
-      <Filter>External\DialogConfiguration</Filter>
-    </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_Mini51.cpp">
-      <Filter>External\DialogConfiguration</Filter>
-    </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_Mini51CN.cpp">
-      <Filter>External\DialogConfiguration</Filter>
-    </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_MT500.cpp">
-      <Filter>External\DialogConfiguration</Filter>
-    </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_Nano100.cpp">
-      <Filter>External\DialogConfiguration</Filter>
-    </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_Nano103.cpp">
-      <Filter>External\DialogConfiguration</Filter>
-    </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_Nano112.cpp">
-      <Filter>External\DialogConfiguration</Filter>
-    </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_NM1120.cpp">
-      <Filter>External\DialogConfiguration</Filter>
-    </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_NM1200.cpp">
-      <Filter>External\DialogConfiguration</Filter>
-    </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_NUC1xx.cpp">
-      <Filter>External\DialogConfiguration</Filter>
-    </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_NUC2xx.cpp">
-      <Filter>External\DialogConfiguration</Filter>
-    </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_NUC4xx.cpp">
-      <Filter>External\DialogConfiguration</Filter>
-    </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_NUC102.cpp">
-      <Filter>External\DialogConfiguration</Filter>
-    </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_NUC103.cpp">
-      <Filter>External\DialogConfiguration</Filter>
-    </ClCompile>
     <ClCompile Include="DialogConfiguration\DialogResize.cpp">
       <Filter>External\DialogConfiguration</Filter>
     </ClCompile>
@@ -158,35 +110,11 @@
     <ClCompile Include="ISPLdCMD.cpp">
       <Filter>ISPTool\NuvoISP</Filter>
     </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_M0564.cpp">
-      <Filter>External\DialogConfiguration</Filter>
-    </ClCompile>
     <ClCompile Include="DialogConfiguration\DialogConfiguration_M480.cpp">
-      <Filter>External\DialogConfiguration</Filter>
-    </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_M2351.cpp">
-      <Filter>External\DialogConfiguration</Filter>
-    </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_I94000.cpp">
-      <Filter>External\DialogConfiguration</Filter>
-    </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_AU9100.cpp">
-      <Filter>External\DialogConfiguration</Filter>
-    </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_N570.cpp">
-      <Filter>External\DialogConfiguration</Filter>
-    </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_M031.cpp">
-      <Filter>External\DialogConfiguration</Filter>
-    </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_M251.cpp">
       <Filter>External\DialogConfiguration</Filter>
     </ClCompile>
     <ClCompile Include="DataBase\NuDataBase.cpp">
       <Filter>External\DataBase</Filter>
-    </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_OT8051.cpp">
-      <Filter>External\DialogConfiguration</Filter>
     </ClCompile>
     <ClCompile Include="ThirdParty\hidapi\windows\hid.c">
       <Filter>ThirdParty\hidapi</Filter>

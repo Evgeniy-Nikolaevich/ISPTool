@@ -100,6 +100,7 @@ void CNuvoISPDlg::DoDataExchange(CDataExchange *pDX)
     DDX_Check(pDX, IDC_CHECK_NVM, m_bProgram_NVM);
 #if (SUPPORT_SPIFLASH)
     DDX_Check(pDX, IDC_CHECK_SPI, m_bProgram_SPI);
+    DDX_Check(pDX, IDC_CHECK_ERASE_SPI, m_bErase_SPI);
 #endif
     DDX_Check(pDX, IDC_CHECK_CONFIG, m_bProgram_Config);
     DDX_Check(pDX, IDC_CHECK_ERASE, m_bErase);
@@ -121,7 +122,6 @@ BEGIN_MESSAGE_MAP(CNuvoISPDlg, CDialog)
     ON_BN_CLICKED(IDC_BUTTON_NVM, OnButtonLoadFile)
 #if (SUPPORT_SPIFLASH)
     ON_BN_CLICKED(IDC_BUTTON_SPI, OnButtonLoadFile)
-    ON_BN_CLICKED(IDC_CHECK_SPI, OnButtonCheckSPI)
 #endif
     ON_BN_CLICKED(IDC_BUTTON_START, OnButtonStart)
     ON_NOTIFY(TCN_SELCHANGE, IDC_TAB_DATA, OnSelchangeTabData)
@@ -431,6 +431,10 @@ LRESULT CNuvoISPDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
                             AfxMessageBox(_T("Update Dataflash failed"));
                             break;
 
+                        case EPS_ERR_SPI:
+                            AfxMessageBox(_T("Update SPI Flash failed"));
+                            break;
+
                         case EPS_ERR_SIZE:
                             AfxMessageBox(_T("File Size > Flash Size"));
                             break;
@@ -480,7 +484,7 @@ void CNuvoISPDlg::OnButtonStart()
     /* Try to reload file if necessary */
 #if (SUPPORT_SPIFLASH)
 
-    if (!(m_bProgram_APROM || m_bProgram_NVM || m_bProgram_Config || m_bErase || m_bRunAPROM || m_bProgram_SPI)) {
+    if (!(m_bProgram_APROM || m_bProgram_NVM || m_bProgram_Config || m_bErase || m_bRunAPROM || m_bProgram_SPI || m_bErase_SPI)) {
         MessageBox(_T("You did not select any operation."), NULL, MB_ICONSTOP);
         return;
     }
@@ -519,7 +523,7 @@ void CNuvoISPDlg::OnButtonStart()
 
 #if (SUPPORT_SPIFLASH)
 
-        if (strErr.IsEmpty() && (m_bProgram_SPI == 1)) {
+        if (strErr.IsEmpty() && m_bProgram_SPI) {
             if (m_sFileInfo[2].st_size == 0) {
                 strErr = _T("Can not load SPI flash file for programming!");
             }
@@ -640,6 +644,7 @@ void CNuvoISPDlg::EnableProgramOption(BOOL bEnable)
 #if (SUPPORT_SPIFLASH)
     EnableDlgItem(IDC_BUTTON_SPI, bEnable);
     EnableDlgItem(IDC_CHECK_SPI, bEnable);
+    EnableDlgItem(IDC_CHECK_ERASE_SPI, bEnable);
 #endif
 }
 
@@ -965,16 +970,3 @@ void CNuvoISPDlg::OnKillfocusEditAPRomOffset()
     SetDlgItemText(IDC_EDIT_APROM_BASE_ADDRESS, strAddr);
     TRACE(_T("OnKillfocusEditAPRomOffset\n"));
 }
-
-#if (SUPPORT_SPIFLASH)
-void CNuvoISPDlg::OnButtonCheckSPI()
-{
-    UpdateData(TRUE);
-
-    if (m_bProgram_SPI == 2) {
-        SetDlgItemText(IDC_CHECK_SPI, _T("Erase SPI"));
-    } else {
-        SetDlgItemText(IDC_CHECK_SPI, _T("SPI Flash"));
-    }
-}
-#endif

@@ -338,19 +338,23 @@ void CISPProc::Thread_ProgramFlash()
 
 #if (SUPPORT_SPIFLASH)
 
-        if (m_bProgram_SPI) {
+        if (m_bProgram_SPI || m_bErase_SPI) {
             uAddr = 0;
+            uSize = 0;
 
-            if (m_bProgram_SPI == 1) {
+            if (m_bProgram_SPI) {
                 uSize = m_sFileInfo[2].st_size;
                 pBuffer = vector_ptr(m_sFileInfo[2].vbuf);
-            } else if (m_bProgram_SPI == 2) {
-                uSize = 128 * 1024;
-                pBuffer = NULL;
+            }
+
+            if (m_bErase_SPI) {
+                if (uSize < 128 * 1024) {
+                    uSize = 128 * 1024;
+                }
             }
 
             if (!m_ISPLdDev.Cmd_ERASE_SPIFLASH(uAddr, uSize)) {
-                m_eProcSts = EPS_ERR_NVM;
+                m_eProcSts = EPS_ERR_SPI;
                 Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
                 return;
             }
@@ -359,7 +363,7 @@ void CISPProc::Thread_ProgramFlash()
             m_ISPLdDev.SyncPackno();
 
             for (unsigned long i = 0; i < uSize;) {
-                if (m_bProgram_SPI == 2) {
+                if (!m_bProgram_SPI) {
                     break; // Erase Only
                 }
 
@@ -374,7 +378,7 @@ void CISPProc::Thread_ProgramFlash()
                 }
 
                 if (!m_ISPLdDev.Cmd_UPDATE_SPIFLASH(uAddr + i, uLen, (const char *)(pBuffer + i))) {
-                    m_eProcSts = EPS_ERR_NVM;
+                    m_eProcSts = EPS_ERR_SPI;
                     Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
                     return;
                 } else {

@@ -89,6 +89,8 @@
 #define IDC_CHECK_ERASE                 1067
 #define IDC_EDIT_FLASH_INFO2            1068
 #define IDC_CHECK_LDROM_WR_PROTECT      1068
+#define IDC_CHECK_ERASE2                1068
+#define IDC_CHECK_ERASE_SPI             1068
 #define IDC_CHECK_BLANKCHECK            1069
 #define IDC_EDIT_FLASH_INFO3            1070
 #define IDC_CHECK_PROGRAM               1071

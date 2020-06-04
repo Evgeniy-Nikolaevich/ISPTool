@@ -12,7 +12,8 @@ public:
     void CloseDevice();
     BOOL OpenDevice(CString strComNum);
     BOOL ReadFile(char *pcBuffer, DWORD szMaxLen, DWORD *pdwLength, DWORD dwMilliseconds);
-    BOOL WriteFile(const char *pcBuffer, DWORD szLen, DWORD *pdwLength, DWORD dwMilliseconds);
+    BOOL WriteFile(const char* pcBuffer, DWORD szLen, DWORD* pdwLength, DWORD dwMilliseconds);
+    BOOL _WriteFile(const char* pcBuffer, DWORD szLen, DWORD* pdwLength, DWORD dwMilliseconds);
     //OVERLAPPED m_overlapped;
 };
 

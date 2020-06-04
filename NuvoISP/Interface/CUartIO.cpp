@@ -103,7 +103,7 @@ BOOL CUartIO::ReadFile(char *pcBuffer, DWORD szMaxLen, DWORD *pdwLength, DWORD d
     return success;
 }
 
-BOOL CUartIO::WriteFile(const char *pcBuffer, DWORD szLen, DWORD *pdwLength, DWORD dwMilliseconds)
+BOOL CUartIO::_WriteFile(const char *pcBuffer, DWORD szLen, DWORD *pdwLength, DWORD dwMilliseconds)
 {
     PurgeComm(m_hCOMHandle, PURGE_TXABORT | PURGE_RXABORT | PURGE_TXCLEAR
               | PURGE_RXCLEAR);
@@ -123,5 +123,17 @@ BOOL CUartIO::WriteFile(const char *pcBuffer, DWORD szLen, DWORD *pdwLength, DWO
     }
 
     CloseHandle(overlapped.hEvent);
+    return TRUE;
+}
+
+BOOL CUartIO::WriteFile(const char* pcBuffer, DWORD szLen, DWORD* pdwLength, DWORD dwMilliseconds)
+{
+    // bRet = m_comIO.WriteFile(m_acBuffer + 1, 64, &dwLength, dwMilliseconds);
+    DWORD dwLength;
+    for (int i = 0; i < szLen; i++) {
+        _WriteFile(pcBuffer + i, 1, &dwLength, dwMilliseconds);
+        Sleep(1);
+        *pdwLength += dwLength;
+    }
     return TRUE;
 }
